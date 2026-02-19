@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 export default function WorkOrdersPage() {
     return (
         <main className="flex-1 flex flex-col min-w-0 bg-slate-50 dark:bg-black/20 h-full overflow-hidden">
@@ -19,10 +21,10 @@ export default function WorkOrdersPage() {
                             <span className="material-symbols-outlined text-[18px]">filter_list</span>
                             Filter
                         </button>
-                        <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm shadow-primary/20">
+                        <Link href="/dashboard/work-orders/new" className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm shadow-primary/20">
                             <span className="material-symbols-outlined text-[18px]">add</span>
                             Create New WO
-                        </button>
+                        </Link>
                     </div>
                 </div>
 
