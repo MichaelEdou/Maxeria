@@ -90,10 +90,10 @@ export default function RootCausePage() {
                             <span className="material-symbols-outlined text-[20px]">save</span>
                             Save Draft
                         </button>
-                        <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm shadow-primary/20">
+                        <Link href="/dashboard/work-orders/new/diagnostic/solution" className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm shadow-primary/20">
                             Next Step
                             <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                        </button>
+                        </Link>
                     </div>
                 </div>
 
@@ -245,16 +245,16 @@ export default function RootCausePage() {
                                     <div key={step.id} className={`relative pl-10 pb-8 ${!isLast ? 'before:content-[""] before:absolute before:top-8 before:bottom-0 before:left-[1.25rem] before:w-0.5 before:bg-slate-200 dark:before:bg-slate-700' : ''}`}>
                                         {/* Step bubble */}
                                         <div className={`absolute left-0 top-0 p-1.5 rounded-full z-10 shadow-md flex items-center justify-center ${isActive
-                                                ? 'bg-white border-2 border-primary text-primary'
-                                                : 'bg-primary text-white'
+                                            ? 'bg-white border-2 border-primary text-primary'
+                                            : 'bg-primary text-white'
                                             }`}>
                                             <span className="text-xs font-bold px-1">{step.id}</span>
                                         </div>
 
                                         {/* Card */}
                                         <div className={`bg-white dark:bg-slate-800 rounded-xl shadow-sm border p-6 transition-all group ${isActive
-                                                ? 'border-2 border-primary/30 ring-4 ring-primary/5 shadow-lg'
-                                                : 'border-slate-200 dark:border-slate-700 hover:border-primary/50'
+                                            ? 'border-2 border-primary/30 ring-4 ring-primary/5 shadow-lg'
+                                            : 'border-slate-200 dark:border-slate-700 hover:border-primary/50'
                                             }`}>
                                             <div className="flex flex-col md:flex-row gap-6">
                                                 {/* Answer */}
@@ -262,8 +262,8 @@ export default function RootCausePage() {
                                                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">{step.question}</label>
                                                     <textarea
                                                         className={`block w-full rounded-lg text-sm shadow-sm focus:ring-primary ${isActive
-                                                                ? 'border-2 border-primary bg-white dark:bg-slate-900 text-slate-900 dark:text-white'
-                                                                : 'border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white'
+                                                            ? 'border-2 border-primary bg-white dark:bg-slate-900 text-slate-900 dark:text-white'
+                                                            : 'border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white'
                                                             } p-3`}
                                                         rows={2}
                                                         placeholder={isActive ? 'Enter the cause here...' : ''}
