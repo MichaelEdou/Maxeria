@@ -24,14 +24,23 @@ export default function DashboardOverviewLayout({
                     </div>
                 </div>
                 <nav className="flex-1 px-3 py-4 flex flex-col gap-1 overflow-y-auto">
-                    {pathname === '/dashboard/work-orders/new/diagnostic' ? (
+                    {pathname.startsWith('/dashboard/work-orders/new/diagnostic') ? (
                         <>
                             <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-3 mt-2">Diagnostic Process</div>
-                            <Link href="/dashboard/work-orders/new/diagnostic" className="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg transition-colors font-medium">
-                                <span className="material-symbols-outlined text-[20px]">manage_search</span>
+                            <Link href="/dashboard/work-orders/new/diagnostic" className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors font-medium ${pathname === '/dashboard/work-orders/new/diagnostic'
+                                    ? 'bg-primary/10 text-primary'
+                                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                                }`}>
+                                <span className={`material-symbols-outlined text-[20px] ${pathname !== '/dashboard/work-orders/new/diagnostic' ? 'text-green-500' : ''
+                                    }`}>
+                                    {pathname !== '/dashboard/work-orders/new/diagnostic' ? 'check_circle' : 'manage_search'}
+                                </span>
                                 <span className="text-sm">Situation Analysis</span>
                             </Link>
-                            <Link href="#" className="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors group">
+                            <Link href="/dashboard/work-orders/new/diagnostic/validation" className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group ${pathname === '/dashboard/work-orders/new/diagnostic/validation'
+                                    ? 'bg-primary/10 text-primary'
+                                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                                }`}>
                                 <span className="material-symbols-outlined text-[20px] group-hover:text-primary">fact_check</span>
                                 <span className="text-sm font-medium">Validation</span>
                             </Link>
