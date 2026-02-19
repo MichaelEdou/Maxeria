@@ -300,7 +300,7 @@ export default function WorkOrdersPage() {
                         {/* Table Rows */}
                         <div className="overflow-y-auto custom-scrollbar flex-1">
                             {/* Row 1 */}
-                            <div className="grid grid-cols-12 gap-4 px-4 py-4 border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/50 items-center transition-colors group">
+                            <Link href="/dashboard/work-orders/4921" className="grid grid-cols-12 gap-4 px-4 py-4 border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/50 items-center transition-colors group cursor-pointer">
                                 <div className="col-span-1 font-mono text-xs font-bold text-slate-700 dark:text-slate-300">#OT-4921</div>
                                 <div className="col-span-1">
                                     <span className="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-2 py-1 rounded text-xs font-bold inline-flex items-center gap-1">
@@ -314,13 +314,13 @@ export default function WorkOrdersPage() {
                                 <div className="col-span-2 flex items-center justify-between gap-2">
                                     <span className="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 px-2.5 py-1 rounded-full text-xs font-semibold border border-blue-100 dark:border-blue-800">In Progress</span>
                                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button className="p-1.5 text-primary hover:bg-primary/10 rounded-md"><span className="material-symbols-outlined text-[20px]">play_circle</span></button>
-                                        <button className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md"><span className="material-symbols-outlined text-[20px]">visibility</span></button>
+                                        <span className="p-1.5 text-primary hover:bg-primary/10 rounded-md"><span className="material-symbols-outlined text-[20px]">play_circle</span></span>
+                                        <span className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md"><span className="material-symbols-outlined text-[20px]">visibility</span></span>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                             {/* Row 2 */}
-                            <div className="grid grid-cols-12 gap-4 px-4 py-4 border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/50 items-center transition-colors group">
+                            <Link href="/dashboard/work-orders/4920" className="grid grid-cols-12 gap-4 px-4 py-4 border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/50 items-center transition-colors group cursor-pointer">
                                 <div className="col-span-1 font-mono text-xs font-bold text-slate-700 dark:text-slate-300">#OT-4920</div>
                                 <div className="col-span-1"><span className="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-2 py-1 rounded text-xs font-bold">High</span></div>
                                 <div className="col-span-2"><div className="flex flex-col"><span className="text-sm font-medium text-slate-900 dark:text-white">Conveyor Belt M1</span><span className="text-xs text-slate-500">Zone A - Logistics</span></div></div>
@@ -329,11 +329,11 @@ export default function WorkOrdersPage() {
                                 <div className="col-span-1"><div className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-green-500"></span><span className="text-xs font-medium text-slate-600 dark:text-slate-400">In SAP</span></div></div>
                                 <div className="col-span-2 flex items-center justify-between gap-2">
                                     <span className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2.5 py-1 rounded-full text-xs font-semibold border border-slate-200 dark:border-slate-700">Not Started</span>
-                                    <button className="bg-primary hover:bg-primary/90 text-white px-3 py-1.5 rounded text-xs font-semibold shadow-sm transition-colors opacity-0 group-hover:opacity-100 whitespace-nowrap">Start Diagnosis</button>
+                                    <span className="bg-primary text-white px-3 py-1.5 rounded text-xs font-semibold shadow-sm opacity-0 group-hover:opacity-100 whitespace-nowrap">View Details</span>
                                 </div>
-                            </div>
+                            </Link>
                             {/* Row 3 */}
-                            <div className="grid grid-cols-12 gap-4 px-4 py-4 border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/50 items-center transition-colors group">
+                            <Link href="/dashboard/work-orders/4918" className="grid grid-cols-12 gap-4 px-4 py-4 border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/50 items-center transition-colors group cursor-pointer">
                                 <div className="col-span-1 font-mono text-xs font-bold text-slate-700 dark:text-slate-300">#OT-4918</div>
                                 <div className="col-span-1"><span className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded text-xs font-bold">Medium</span></div>
                                 <div className="col-span-2"><div className="flex flex-col"><span className="text-sm font-medium text-slate-900 dark:text-white">Compressor C-40</span><span className="text-xs text-slate-500">Zone C - Utility</span></div></div>
@@ -342,11 +342,11 @@ export default function WorkOrdersPage() {
                                 <div className="col-span-1"><div className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-amber-500"></span><span className="text-xs font-medium text-slate-600 dark:text-slate-400">Syncing...</span></div></div>
                                 <div className="col-span-2 flex items-center justify-between gap-2">
                                     <span className="bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 px-2.5 py-1 rounded-full text-xs font-semibold border border-green-100 dark:border-green-800 flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">check</span> Solved</span>
-                                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity"><button className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md"><span className="material-symbols-outlined text-[20px]">description</span></button></div>
+                                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity"><span className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md"><span className="material-symbols-outlined text-[20px]">description</span></span></div>
                                 </div>
-                            </div>
+                            </Link>
                             {/* Row 4 */}
-                            <div className="grid grid-cols-12 gap-4 px-4 py-4 border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/50 items-center transition-colors group">
+                            <Link href="/dashboard/work-orders/4915" className="grid grid-cols-12 gap-4 px-4 py-4 border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/50 items-center transition-colors group cursor-pointer">
                                 <div className="col-span-1 font-mono text-xs font-bold text-slate-700 dark:text-slate-300">#OT-4915</div>
                                 <div className="col-span-1"><span className="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-2 py-1 rounded text-xs font-bold">Low</span></div>
                                 <div className="col-span-2"><div className="flex flex-col"><span className="text-sm font-medium text-slate-900 dark:text-white">HVAC Unit 3</span><span className="text-xs text-slate-500">Admin Building</span></div></div>
@@ -356,13 +356,13 @@ export default function WorkOrdersPage() {
                                 <div className="col-span-2 flex items-center justify-between gap-2">
                                     <span className="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 px-2.5 py-1 rounded-full text-xs font-semibold border border-blue-100 dark:border-blue-800">In Progress</span>
                                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button className="p-1.5 text-primary hover:bg-primary/10 rounded-md"><span className="material-symbols-outlined text-[20px]">play_circle</span></button>
-                                        <button className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md"><span className="material-symbols-outlined text-[20px]">visibility</span></button>
+                                        <span className="p-1.5 text-primary hover:bg-primary/10 rounded-md"><span className="material-symbols-outlined text-[20px]">play_circle</span></span>
+                                        <span className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md"><span className="material-symbols-outlined text-[20px]">visibility</span></span>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                             {/* Row 5 */}
-                            <div className="grid grid-cols-12 gap-4 px-4 py-4 border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/50 items-center transition-colors group">
+                            <Link href="/dashboard/work-orders/4902" className="grid grid-cols-12 gap-4 px-4 py-4 border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/50 items-center transition-colors group cursor-pointer">
                                 <div className="col-span-1 font-mono text-xs font-bold text-slate-700 dark:text-slate-300">#OT-4902</div>
                                 <div className="col-span-1"><span className="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-2 py-1 rounded text-xs font-bold">High</span></div>
                                 <div className="col-span-2"><div className="flex flex-col"><span className="text-sm font-medium text-slate-900 dark:text-white">Robot Arm Kuka-7</span><span className="text-xs text-slate-500">Zone B - Assembly</span></div></div>
@@ -371,9 +371,9 @@ export default function WorkOrdersPage() {
                                 <div className="col-span-1"><div className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-red-500"></span><span className="text-xs font-medium text-slate-600 dark:text-slate-400">Error</span></div></div>
                                 <div className="col-span-2 flex items-center justify-between gap-2">
                                     <span className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2.5 py-1 rounded-full text-xs font-semibold border border-slate-200 dark:border-slate-700">Not Started</span>
-                                    <button className="bg-primary hover:bg-primary/90 text-white px-3 py-1.5 rounded text-xs font-semibold shadow-sm transition-colors opacity-0 group-hover:opacity-100 whitespace-nowrap">Start Diagnosis</button>
+                                    <span className="bg-primary text-white px-3 py-1.5 rounded text-xs font-semibold shadow-sm opacity-0 group-hover:opacity-100 whitespace-nowrap">View Details</span>
                                 </div>
-                            </div>
+                            </Link>
                         </div>
 
                         {/* Pagination */}
