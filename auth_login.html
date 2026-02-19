@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Neo-DIAGDEF Secure Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f8fafc","surface-white": "#ffffff",
+                        "text-primary": "#1e293b",},
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'card': '0 0 0 1px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.04)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="bg-background-light text-text-primary font-display antialiased h-screen overflow-hidden flex flex-col md:flex-row">
+<div class="hidden md:flex md:w-1/2 lg:w-3/5 relative bg-slate-100 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center z-0 filter saturate-50 brightness-110 contrast-105" data-alt="Engineer using a tablet in a clean high-tech industrial facility" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC0Mp1CCTor5SDDqxKxJsQcR8UJRTyOMbeStyU_BzXcmQOT16e6GgK-nV-o_yPWB8ZQkWbX2Lu2Kjhs5uljG2QC5ieBLi2Ml4dKv-BwgzqMuFQe1eZNVcVqGprlrtRTbtvdwm44XBtD-MfvUF1FJPs6_Qt48nbR8GlCzmIWTjC7SjGXk3NqIk61uhwysorUsLevTxSamVJps7xZ3H73KtMPymkH4b_k2Rw3K3LcrUECdqsU9klo4452oAaH1XoZcq3XvTm_hkSSEBk');">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-white/90 via-white/40 to-transparent z-10"></div>
+<div class="absolute inset-0 bg-blue-50/20 mix-blend-overlay z-10"></div>
+<div class="relative z-20 flex flex-col justify-between p-12 w-full h-full text-slate-800">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border border-white/50">
+<span class="material-symbols-outlined text-3xl text-primary">shield_lock</span>
+</div>
+<span class="text-xl font-bold tracking-tight text-slate-900 bg-white/60 backdrop-blur-sm px-3 py-1 rounded-full">Neo-DIAGDEF</span>
+</div>
+<div class="max-w-lg mb-10">
+<h2 class="text-4xl lg:text-5xl font-black leading-tight tracking-tight mb-6 text-slate-900 drop-shadow-sm">
+                Sovereign Industrial Diagnostics
+            </h2>
+<div class="flex flex-col gap-4 border-l-4 border-primary pl-6 bg-white/40 backdrop-blur-md p-4 rounded-r-xl shadow-sm border-y border-r border-white/50">
+<p class="text-slate-700 text-lg leading-relaxed font-medium">
+                    Authorized personnel only. This system processes classified industrial telemetry and diagnostic data.
+                </p>
+<div class="flex items-center gap-2 text-primary text-sm font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm font-bold">encrypted</span>
+                    End-to-End Encrypted
+                </div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex-1 flex flex-col justify-center items-center w-full h-full bg-background-light p-6 md:p-12 overflow-y-auto">
+<div class="w-full max-w-[480px] bg-surface-white p-8 md:p-10 rounded-2xl shadow-card border border-slate-100 flex flex-col gap-8">
+<div class="md:hidden flex items-center gap-2 mb-2 text-slate-900 justify-center">
+<span class="material-symbols-outlined text-3xl text-primary">shield_lock</span>
+<span class="text-lg font-bold">Neo-DIAGDEF</span>
+</div>
+<div class="flex flex-col gap-2 text-center md:text-left">
+<h1 class="text-3xl font-bold tracking-tight text-slate-900">Secure Access</h1>
+<p class="text-slate-500 font-medium">Enter your credentials to access the mainframe.</p>
+</div>
+<form class="flex flex-col gap-5" onsubmit="event.preventDefault();">
+<label class="flex flex-col gap-2">
+<span class="text-sm font-semibold text-slate-700">Username or Corporate Email</span>
+<div class="relative group">
+<input class="w-full h-12 px-4 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-slate-400 focus:bg-white" placeholder="user@organization.mil" type="text"/>
+<span class="material-symbols-outlined absolute right-4 top-3 text-slate-400 group-focus-within:text-primary transition-colors">person</span>
+</div>
+</label>
+<label class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="text-sm font-semibold text-slate-700">Password</span>
+<a class="text-xs font-semibold text-primary hover:text-blue-700 hover:underline transition-colors" href="#">Forgot password?</a>
+</div>
+<div class="relative group">
+<input class="w-full h-12 px-4 pr-12 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-slate-400 focus:bg-white" placeholder="••••••••••••" type="password"/>
+<button class="absolute right-0 top-0 h-full px-4 text-slate-400 hover:text-slate-600 transition-colors flex items-center" type="button">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+</label>
+<div class="flex items-center gap-3">
+<label class="relative inline-flex items-center cursor-pointer group">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+<span class="ms-3 text-sm font-medium text-slate-600 group-hover:text-slate-800 transition-colors">Remember this device</span>
+</label>
+</div>
+<div class="flex flex-col gap-4 mt-2">
+<button class="w-full h-12 flex items-center justify-center gap-2 bg-primary hover:bg-blue-600 text-white font-bold rounded-lg transition-all shadow-lg shadow-primary/30 hover:shadow-primary/40 active:scale-[0.98]">
+                    Sign In
+                </button>
+<div class="relative flex py-2 items-center">
+<div class="flex-grow border-t border-slate-200"></div>
+<span class="flex-shrink-0 mx-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Secure Alternate Login</span>
+<div class="flex-grow border-t border-slate-200"></div>
+</div>
+<button class="w-full h-12 flex items-center justify-center gap-3 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold rounded-lg transition-all shadow-sm group">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-slate-600 transition-colors">smart_card_reader</span>
+                    Hardware Token / CAC Login
+                </button>
+</div>
+</form>
+<div class="flex flex-col gap-6">
+<p class="text-center text-sm text-slate-500">
+                New organization? 
+                <a class="font-bold text-primary hover:text-blue-700 hover:underline transition-colors" href="#">Request access</a>
+</p>
+<div class="pt-4 border-t border-slate-100 text-[11px] text-slate-400 text-center leading-relaxed">
+                By accessing this system, you consent to monitoring and interception. Unauthorized use is prohibited and subject to criminal and civil penalties.
+            </div>
+</div>
+</div>
+</div>
+
+</body></html>
