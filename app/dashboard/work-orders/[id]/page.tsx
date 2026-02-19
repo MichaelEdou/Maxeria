@@ -17,27 +17,27 @@ const woData: Record<string, {
     icon: string;
 }> = {
     '4921': {
-        id: 'OT-4921', priority: 'Critical', asset: 'Hydraulic Pump A2', zone: 'Zone B - Line 4',
+        id: 'WO-4921', priority: 'Critical', asset: 'Hydraulic Pump A2', zone: 'Zone B - Line 4',
         serial: 'HYD-2023-X99', symptom: 'Motor: High vibration detected on bearing housing. Operator reported unusual noise during start-up sequence at 08:00 AM. Vibration monitoring system triggered alert code VIB-002.',
         status: 'In Progress', tech: 'John Doe', techInitials: 'JD', icon: 'water_pump',
     },
     '4920': {
-        id: 'OT-4920', priority: 'High', asset: 'Conveyor Belt M1', zone: 'Zone A - Logistics',
+        id: 'WO-4920', priority: 'High', asset: 'Conveyor Belt M1', zone: 'Zone A - Logistics',
         serial: 'CNV-2022-M01', symptom: 'Belt: Misalignment detected during routine check. Belt offset measuring 12mm from centre-line.',
         status: 'Not Started', tech: 'Unassigned', techInitials: '--', icon: 'conveyor_belt',
     },
     '4918': {
-        id: 'OT-4918', priority: 'Medium', asset: 'Compressor C-40', zone: 'Zone C - Utility',
+        id: 'WO-4918', priority: 'Medium', asset: 'Compressor C-40', zone: 'Zone C - Utility',
         serial: 'CMP-2021-C40', symptom: 'Compressor: Unusual noise during startup sequence. Possible valve issue.',
         status: 'Solved', tech: 'Alice Smith', techInitials: 'AS', icon: 'air',
     },
     '4915': {
-        id: 'OT-4915', priority: 'Low', asset: 'HVAC Unit 3', zone: 'Admin Building',
+        id: 'WO-4915', priority: 'Low', asset: 'HVAC Unit 3', zone: 'Admin Building',
         serial: 'HVC-2020-U03', symptom: 'Fan: Periodic maintenance request (Filter check).',
         status: 'In Progress', tech: 'Mike K.', techInitials: 'MK', icon: 'hvac',
     },
     '4902': {
-        id: 'OT-4902', priority: 'High', asset: 'Robot Arm Kuka-7', zone: 'Zone B - Assembly',
+        id: 'WO-4902', priority: 'High', asset: 'Robot Arm Kuka-7', zone: 'Zone B - Assembly',
         serial: 'ROB-2023-K07', symptom: 'Servo: Axis 3 positioning error exceeded tolerance by 0.8mm.',
         status: 'Not Started', tech: 'Unassigned', techInitials: '--', icon: 'robot_2',
     },
@@ -77,8 +77,8 @@ export default function WorkOrderDetailPage() {
                                 {wo.priority}
                             </span>
                             <span className={`px-2 py-1 rounded text-xs font-bold border ${wo.status === 'In Progress' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-900/50'
-                                    : wo.status === 'Solved' ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-100 dark:border-green-800'
-                                        : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-600'
+                                : wo.status === 'Solved' ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-100 dark:border-green-800'
+                                    : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-600'
                                 }`}>
                                 {wo.status}
                             </span>
@@ -177,7 +177,7 @@ export default function WorkOrderDetailPage() {
                                                 <span className="material-symbols-outlined">history</span>
                                             </div>
                                             <div>
-                                                <p className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-primary transition-colors">Similar Case: #OT-3882</p>
+                                                <p className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-primary transition-colors">Similar Case: #WO-3882</p>
                                                 <p className="text-xs text-slate-500 mt-1">Resolved by changing coupling element (94% similarity)</p>
                                                 <div className="mt-2 flex gap-2">
                                                     <span className="text-[10px] bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-300 px-1.5 py-0.5 rounded">Insight</span>

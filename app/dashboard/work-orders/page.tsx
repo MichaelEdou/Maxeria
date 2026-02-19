@@ -116,7 +116,7 @@ export default function WorkOrdersPage() {
     // ── Create new WO ──────────────────────────────────────────────────────
     const handleCreateWO = async () => {
         if (!newWO.title.trim()) return;
-        const nextNum = `OT-${Date.now().toString().slice(-4)}`;
+        const nextNum = `WO-${Date.now().toString().slice(-4)}`;
         const { error: dbErr } = await supabase.from('work_orders').insert({
             wo_number: nextNum,
             title: newWO.title,
@@ -348,7 +348,7 @@ export default function WorkOrdersPage() {
                                     <button onClick={() => setShowModal(true)} className="text-sm text-primary underline">Create the first one</button>
                                 </div>
                             ) : filtered.map(wo => {
-                                const woIdSlug = wo.wo_number.replace('OT-', '');
+                                const woIdSlug = wo.wo_number.replace(/^[A-Z]+-/, '');
                                 const gmao = gmaoStyle[wo.gmao_sync_status ?? 'PENDING'] ?? gmaoStyle.PENDING;
                                 const techName = wo.profiles
                                     ? `${wo.profiles.first_name ?? ''} ${wo.profiles.last_name ?? ''}`.trim() || 'Unassigned'
@@ -363,7 +363,7 @@ export default function WorkOrdersPage() {
                                         className="grid grid-cols-12 gap-4 px-4 py-4 border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/50 items-center transition-colors group cursor-pointer"
                                     >
                                         <div className="col-span-1 font-mono text-xs font-bold text-slate-700 dark:text-slate-300">
-                                            #{wo.wo_number}
+                                            #WO-{wo.wo_number.replace(/^[A-Z]+-/, '')}
                                         </div>
                                         <div className="col-span-1">
                                             <span className={`px-2 py-1 rounded text-xs font-bold inline-flex items-center gap-1 ${priorityStyle[wo.priority] ?? priorityStyle.MEDIUM}`}>
