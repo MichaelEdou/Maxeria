@@ -24,7 +24,36 @@ export default function DashboardOverviewLayout({
                     </div>
                 </div>
                 <nav className="flex-1 px-3 py-4 flex flex-col gap-1 overflow-y-auto">
-                    {pathname.startsWith('/dashboard/work-orders') ? (
+                    {pathname === '/dashboard/work-orders/new/diagnostic' ? (
+                        <>
+                            <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-3 mt-2">Diagnostic Process</div>
+                            <Link href="/dashboard/work-orders/new/diagnostic" className="flex items-center gap-3 px-3 py-2 bg-primary/10 text-primary rounded-lg transition-colors font-medium">
+                                <span className="material-symbols-outlined text-[20px]">manage_search</span>
+                                <span className="text-sm">Situation Analysis</span>
+                            </Link>
+                            <Link href="#" className="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors group">
+                                <span className="material-symbols-outlined text-[20px] group-hover:text-primary">fact_check</span>
+                                <span className="text-sm font-medium">Validation</span>
+                            </Link>
+                            <Link href="#" className="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors group">
+                                <span className="material-symbols-outlined text-[20px] group-hover:text-primary">psychology</span>
+                                <span className="text-sm font-medium">Root Cause (5 Why)</span>
+                            </Link>
+                            <Link href="#" className="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors group">
+                                <span className="material-symbols-outlined text-[20px] group-hover:text-primary">build</span>
+                                <span className="text-sm font-medium">Remedial Actions</span>
+                            </Link>
+                            <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-3 mt-4">Case Info</div>
+                            <div className="px-3 py-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-700">
+                                <div className="flex items-center justify-between mb-2">
+                                    <span className="text-xs font-bold text-slate-500">WO #OT-4921</span>
+                                    <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300">Critical</span>
+                                </div>
+                                <div className="text-sm font-medium text-slate-800 dark:text-slate-200">Hydraulic Pump A2</div>
+                                <div className="text-xs text-slate-500 mt-1">Zone B - Line 4</div>
+                            </div>
+                        </>
+                    ) : pathname.startsWith('/dashboard/work-orders') ? (
                         <>
                             <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-3 mt-2">Platform</div>
                             <Link href="/dashboard" className="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors group">

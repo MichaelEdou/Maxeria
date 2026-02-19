@@ -32,10 +32,10 @@ export default function NewWorkOrderPage() {
                             <span className="material-symbols-outlined text-[18px]">edit</span>
                             Edit
                         </button>
-                        <button className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg text-sm font-bold hover:bg-[#0f6acc] transition-all shadow-lg shadow-primary/20 hover:-translate-y-0.5 transform">
+                        <Link href="/dashboard/work-orders/new/diagnostic" className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg text-sm font-bold hover:bg-[#0f6acc] transition-all shadow-lg shadow-primary/20 hover:-translate-y-0.5 transform">
                             <span className="material-symbols-outlined text-[20px]">rocket_launch</span>
                             Launch MAXER Diagnostic
-                        </button>
+                        </Link>
                     </div>
                 </div>
 
