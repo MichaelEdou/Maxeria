@@ -50,8 +50,8 @@ export default function DashboardOverviewLayout({
                                 <span className="text-sm font-medium">Validation</span>
                             </Link>
                             <Link href="/dashboard/work-orders/new/diagnostic/root-cause" className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group ${pathname === '/dashboard/work-orders/new/diagnostic/root-cause'
-                                    ? 'bg-primary/10 text-primary'
-                                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                                ? 'bg-primary/10 text-primary'
+                                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                                 }`}>
                                 <span className={`material-symbols-outlined text-[20px] ${pathname === '/dashboard/work-orders/new/diagnostic/solution' ? 'text-green-500' : 'group-hover:text-primary'
                                     }`}>
@@ -60,8 +60,8 @@ export default function DashboardOverviewLayout({
                                 <span className="text-sm font-medium">Root Cause (5 Why)</span>
                             </Link>
                             <Link href="/dashboard/work-orders/new/diagnostic/solution" className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group ${pathname === '/dashboard/work-orders/new/diagnostic/solution'
-                                    ? 'bg-primary/10 text-primary'
-                                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                                ? 'bg-primary/10 text-primary'
+                                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                                 }`}>
                                 <span className="material-symbols-outlined text-[20px] group-hover:text-primary">build</span>
                                 <span className="text-sm font-medium">Remedial Actions</span>
@@ -116,7 +116,7 @@ export default function DashboardOverviewLayout({
                                 <span className="material-symbols-outlined">precision_manufacturing</span>
                                 <span className="text-sm font-medium">Asset</span>
                             </Link>
-                            <Link href="/dashboard/assets" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors group ${pathname === '/dashboard/assets/management' ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'}`}>
+                            <Link href="/dashboard/assets/management" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors group ${pathname === '/dashboard/assets/management' ? 'bg-primary/10 text-primary' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'}`}>
                                 <span className="material-symbols-outlined">factory</span>
                                 <span className="text-sm font-medium">Asset Management</span>
                             </Link>
