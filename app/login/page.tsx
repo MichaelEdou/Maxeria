@@ -1,8 +1,36 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
 
 export default function LoginPage() {
+    const router = useRouter();
+    const [email, setEmail] = useState('admin@gmail.com');
+    const [password, setPassword] = useState('password123');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
+
+        const supabase = createClient();
+        const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password
+        });
+
+        if (error) {
+            setError(error.message);
+            setLoading(false);
+        } else {
+            router.push('/dashboard/work-orders');
+        }
+    };
+
     return (
         <div className="bg-background-light text-text-primary font-display antialiased h-screen overflow-hidden flex flex-col md:flex-row">
             <div className="hidden md:flex md:w-1/2 lg:w-3/5 relative bg-slate-100 overflow-hidden">
@@ -47,11 +75,18 @@ export default function LoginPage() {
                         <h1 className="text-3xl font-bold tracking-tight text-slate-900">Secure Access</h1>
                         <p className="text-slate-500 font-medium">Enter your credentials to access the mainframe.</p>
                     </div>
-                    <form className="flex flex-col gap-5" onSubmit={(e) => e.preventDefault()}>
+                    <form className="flex flex-col gap-5" onSubmit={handleLogin}>
                         <label className="flex flex-col gap-2">
                             <span className="text-sm font-semibold text-slate-700">Username or Corporate Email</span>
                             <div className="relative group">
-                                <input className="w-full h-12 px-4 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-slate-400 focus:bg-white" placeholder="user@organization.mil" type="text" />
+                                <input
+                                    className="w-full h-12 px-4 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-slate-400 focus:bg-white"
+                                    placeholder="user@organization.mil"
+                                    type="text"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                />
                                 <span className="material-symbols-outlined absolute right-4 top-3 text-slate-400 group-focus-within:text-primary transition-colors">person</span>
                             </div>
                         </label>
@@ -61,7 +96,14 @@ export default function LoginPage() {
                                 <a className="text-xs font-semibold text-primary hover:text-blue-700 hover:underline transition-colors" href="#">Forgot password?</a>
                             </div>
                             <div className="relative group">
-                                <input className="w-full h-12 px-4 pr-12 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-slate-400 focus:bg-white" placeholder="••••••••••••" type="password" />
+                                <input
+                                    className="w-full h-12 px-4 pr-12 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-slate-400 focus:bg-white"
+                                    placeholder="••••••••••••"
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
                                 <button className="absolute right-0 top-0 h-full px-4 text-slate-400 hover:text-slate-600 transition-colors flex items-center" type="button">
                                     <span className="material-symbols-outlined">visibility</span>
                                 </button>
@@ -75,9 +117,18 @@ export default function LoginPage() {
                             </label>
                         </div>
                         <div className="flex flex-col gap-4 mt-2">
-                            <Link href="/dashboard" className="w-full h-12 flex items-center justify-center gap-2 bg-primary hover:bg-blue-600 text-white font-bold rounded-lg transition-all shadow-lg shadow-primary/30 hover:shadow-primary/40 active:scale-[0.98]">
-                                Sign In
-                            </Link>
+                            {error && (
+                                <div className="text-red-500 text-sm font-medium bg-red-50 p-3 rounded-lg border border-red-100">
+                                    {error}
+                                </div>
+                            )}
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="w-full h-12 flex items-center justify-center gap-2 bg-primary hover:bg-blue-600 text-white font-bold rounded-lg transition-all shadow-lg shadow-primary/30 hover:shadow-primary/40 active:scale-[0.98] disabled:opacity-50"
+                            >
+                                {loading ? 'Authenticating...' : 'Sign In'}
+                            </button>
                             <div className="relative flex py-2 items-center">
                                 <div className="flex-grow border-t border-slate-200"></div>
                                 <span className="flex-shrink-0 mx-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Secure Alternate Login</span>

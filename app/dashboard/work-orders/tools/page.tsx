@@ -43,6 +43,8 @@ const PARTS = [
 export default function ToolsPartsPage() {
     const [activeTab, setActiveTab] = useState<'tools' | 'parts'>('tools');
     const [search, setSearch] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalType, setModalType] = useState<'tool' | 'part'>('tool');
 
     const lowStockCount = PARTS.filter(p => p.level !== 'In Stock').length;
 
@@ -60,11 +62,11 @@ export default function ToolsPartsPage() {
     return (
         <div className="flex flex-col h-full bg-slate-50 dark:bg-black/20">
             {/* ─── Header ──────────────────────────────────────────────── */}
-            <div className="p-6 pb-0 shrink-0">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div className="p-6 pb-2 space-y-6 shrink-0">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <div className="flex items-center gap-2 text-sm text-slate-500 mb-1">
-                            <Link href="/dashboard/work-orders" className="hover:text-primary transition-colors">Work Orders</Link>
+                            <Link href="/dashboard/work-orders" className="hover:text-primary transition-colors">Operations</Link>
                             <span className="material-symbols-outlined text-[14px]">chevron_right</span>
                             <span className="text-slate-800 dark:text-slate-200 font-medium">Tools & Parts</span>
                         </div>
@@ -76,10 +78,63 @@ export default function ToolsPartsPage() {
                             <span className="material-symbols-outlined text-[18px]">qr_code_scanner</span>
                             Scan Item
                         </button>
-                        <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm shadow-primary/20">
-                            <span className="material-symbols-outlined text-[18px]">add_shopping_cart</span>
-                            Request Parts
+                        <button
+                            onClick={() => { setModalType(activeTab === 'tools' ? 'tool' : 'part'); setIsModalOpen(true); }}
+                            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm shadow-primary/20"
+                        >
+                            <span className="material-symbols-outlined text-[18px]">add</span>
+                            Add New {activeTab === 'tools' ? 'Tool' : 'Part'}
                         </button>
+                    </div>
+                </div>
+
+                {/* ─── Summary Cards ────────────────────────────────────── */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between h-24 relative overflow-hidden group">
+                        <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <span className="material-symbols-outlined text-5xl text-slate-900 dark:text-white">build</span>
+                        </div>
+                        <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Tools</p>
+                        <div className="flex items-baseline gap-2">
+                            <p className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">{TOOLS.length}</p>
+                            <span className="text-xs text-slate-500">units</span>
+                        </div>
+                    </div>
+                    <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between h-24 relative overflow-hidden group">
+                        <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <span className="material-symbols-outlined text-5xl text-emerald-500">check_circle</span>
+                        </div>
+                        <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Available Now</p>
+                        <div className="flex items-baseline gap-2">
+                            <p className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+                                {TOOLS.filter(t => t.status === 'Available').length}
+                            </p>
+                            <span className="text-xs text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 px-1.5 py-0.5 rounded font-medium">Ready</span>
+                        </div>
+                    </div>
+                    <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between h-24 relative overflow-hidden group">
+                        <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <span className="material-symbols-outlined text-5xl text-amber-500">inventory_2</span>
+                        </div>
+                        <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Low Stock</p>
+                        <div className="flex items-baseline gap-2">
+                            <p className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+                                {PARTS.filter(p => p.level === 'Low Stock').length}
+                            </p>
+                            <span className="text-xs text-amber-600 bg-amber-50 dark:bg-amber-900/20 px-1.5 py-0.5 rounded font-medium">Reorder</span>
+                        </div>
+                    </div>
+                    <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between h-24 relative overflow-hidden group">
+                        <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <span className="material-symbols-outlined text-5xl text-red-500">error</span>
+                        </div>
+                        <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Critical Stock</p>
+                        <div className="flex items-baseline gap-2">
+                            <p className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+                                {PARTS.filter(p => p.level === 'Critical Low').length}
+                            </p>
+                            <span className="text-xs text-red-600 bg-red-50 dark:bg-red-900/20 px-1.5 py-0.5 rounded font-medium">Urgent</span>
+                        </div>
                     </div>
                 </div>
 
@@ -322,6 +377,178 @@ export default function ToolsPartsPage() {
                     </div>
                 )}
             </div>
+
+            {/* ─── Add New Item Modal ─────────────────────────────── */}
+            {isModalOpen && (
+                <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+                    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-4xl flex flex-col max-h-[90vh] overflow-hidden border border-slate-200 dark:border-slate-700">
+                        <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
+                            <div>
+                                <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+                                    Register New {modalType === 'tool' ? 'Diagnostic Tool' : 'Spare Part'}
+                                </h2>
+                                <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                                    Enter detailed inventory information for the new {modalType}.
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => setIsModalOpen(false)}
+                                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                            >
+                                <span className="material-symbols-outlined text-[24px]">close</span>
+                            </button>
+                        </div>
+
+                        <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-8">
+                            {/* Modal Type Toggle */}
+                            <div className="flex bg-slate-100 dark:bg-slate-900/50 p-1 rounded-lg w-fit">
+                                <button
+                                    onClick={() => setModalType('tool')}
+                                    className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${modalType === 'tool'
+                                            ? 'bg-white dark:bg-slate-700 shadow-sm text-primary'
+                                            : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                                        }`}
+                                >
+                                    Diagnostic Tool
+                                </button>
+                                <button
+                                    onClick={() => setModalType('part')}
+                                    className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${modalType === 'part'
+                                            ? 'bg-white dark:bg-slate-700 shadow-sm text-primary'
+                                            : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                                        }`}
+                                >
+                                    Spare Part
+                                </button>
+                            </div>
+
+                            {modalType === 'tool' ? (
+                                <div className="space-y-8 animate-in fade-in duration-200">
+                                    <section>
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <span className="size-6 rounded bg-primary/10 text-primary flex items-center justify-center">
+                                                <span className="material-symbols-outlined text-[16px]">info</span>
+                                            </span>
+                                            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500">General Information</h3>
+                                        </div>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                                                    Tool Name <span className="text-red-500">*</span>
+                                                </label>
+                                                <input className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary px-3 py-2.5 text-slate-900 dark:text-white" placeholder="e.g. Laser Aligner Pro" type="text" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                                                    Serial Number / ID <span className="text-red-500">*</span>
+                                                </label>
+                                                <input className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary px-3 py-2.5 text-slate-900 dark:text-white" placeholder="e.g. LA-2024-X1" type="text" />
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section className="border-t border-slate-100 dark:border-slate-700/50 pt-6">
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <span className="size-6 rounded bg-primary/10 text-primary flex items-center justify-center">
+                                                <span className="material-symbols-outlined text-[16px]">location_on</span>
+                                            </span>
+                                            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500">Storage & Status</h3>
+                                        </div>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Initial Status</label>
+                                                <select className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary py-2.5 text-slate-900 dark:text-white px-2">
+                                                    <option value="Available">Available</option>
+                                                    <option value="Maintenance">Under Maintenance</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Storage Location</label>
+                                                <input className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary px-3 py-2.5 text-slate-900 dark:text-white" placeholder="e.g. Zone B - Cabinet 12" type="text" />
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            ) : (
+                                <div className="space-y-8 animate-in fade-in duration-200">
+                                    <section>
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <span className="size-6 rounded bg-primary/10 text-primary flex items-center justify-center">
+                                                <span className="material-symbols-outlined text-[16px]">settings_input_component</span>
+                                            </span>
+                                            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500">Part Details</h3>
+                                        </div>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                                                    Part Name <span className="text-red-500">*</span>
+                                                </label>
+                                                <input className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary px-3 py-2.5 text-slate-900 dark:text-white" placeholder="e.g. SKF Bearing 6205" type="text" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                                                    Part Number (PN) <span className="text-red-500">*</span>
+                                                </label>
+                                                <input className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary px-3 py-2.5 text-slate-900 dark:text-white" placeholder="e.g. BRG-6205-RS" type="text" />
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section className="border-t border-slate-100 dark:border-slate-700/50 pt-6">
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <span className="size-6 rounded bg-primary/10 text-primary flex items-center justify-center">
+                                                <span className="material-symbols-outlined text-[16px]">inventory</span>
+                                            </span>
+                                            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500">Inventory Management</h3>
+                                        </div>
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Current Stock</label>
+                                                <input className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary px-3 py-2.5 text-slate-900 dark:text-white" type="number" defaultValue="0" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Minimum Threshold</label>
+                                                <input className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary px-3 py-2.5 text-slate-900 dark:text-white" type="number" defaultValue="5" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Unit</label>
+                                                <select className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary py-2.5 text-slate-900 dark:text-white px-2">
+                                                    <option>PCS</option>
+                                                    <option>SET</option>
+                                                    <option>KG</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                            <div className="flex items-center">
+                                <label className="inline-flex items-center cursor-pointer group">
+                                    <input type="checkbox" className="sr-only peer" defaultChecked />
+                                    <div className="relative w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/20 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+                                    <span className="ms-3 text-sm font-medium text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white">Sync with ERP/GMAO</span>
+                                </label>
+                            </div>
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={() => setIsModalOpen(false)}
+                                    className="px-5 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg border border-slate-300 dark:border-slate-600 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={() => setIsModalOpen(false)}
+                                    className="px-5 py-2.5 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg shadow-sm shadow-primary/30 transition-all flex items-center gap-2"
+                                >
+                                    <span className="material-symbols-outlined text-[18px]">save</span>
+                                    Register Item
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

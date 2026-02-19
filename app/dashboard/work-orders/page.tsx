@@ -79,7 +79,7 @@ export default function WorkOrdersPage() {
 
     // New WO form state
     const [newWO, setNewWO] = useState({
-        title: '', priority: 'HIGH', reported_symptom: '', type: 'CORRECTIVE',
+        assetName: '', priority: 'HIGH', object: '', defect: '', description: '', syncGmao: true,
     });
 
     // ── Fetch work orders ──────────────────────────────────────────────────
@@ -115,20 +115,22 @@ export default function WorkOrdersPage() {
 
     // ── Create new WO ──────────────────────────────────────────────────────
     const handleCreateWO = async () => {
-        if (!newWO.title.trim()) return;
+        if (!newWO.assetName.trim() && !newWO.object.trim()) return;
         const nextNum = `WO-${Date.now().toString().slice(-4)}`;
+        const title = `${newWO.assetName || 'Unknown Asset'} - ${newWO.object} ${newWO.defect}`;
+        const symptom = `${newWO.object ? newWO.object + ': ' : ''}${newWO.description || newWO.defect}`;
         const { error: dbErr } = await supabase.from('work_orders').insert({
             wo_number: nextNum,
-            title: newWO.title,
+            title: title,
             priority: newWO.priority,
-            reported_symptom: newWO.reported_symptom || null,
-            type: newWO.type,
+            reported_symptom: symptom,
+            type: 'CORRECTIVE',
             status: 'OPEN',
             plant_id: '00000000-0000-0000-0000-000000000010',
         });
         if (dbErr) { alert('Error: ' + dbErr.message); return; }
         setShowModal(false);
-        setNewWO({ title: '', priority: 'HIGH', reported_symptom: '', type: 'CORRECTIVE' });
+        setNewWO({ assetName: '', priority: 'HIGH', object: '', defect: '', description: '', syncGmao: true });
         fetchWorkOrders();
     };
 
@@ -159,70 +161,178 @@ export default function WorkOrdersPage() {
             {/* ─── Create WO Modal ─────────────────────────────────────── */}
             {showModal && (
                 <div className="absolute inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-                    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-lg flex flex-col border border-slate-200 dark:border-slate-700">
+                    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-4xl flex flex-col max-h-[90vh] overflow-hidden border border-slate-200 dark:border-slate-700">
                         <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
                             <div>
                                 <h2 className="text-xl font-bold text-slate-900 dark:text-white">Create New Work Order</h2>
-                                <p className="text-sm text-slate-500 mt-0.5">This will be saved to the database.</p>
+                                <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Manually register a maintenance request for diagnosis.</p>
                             </div>
-                            <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-slate-600">
+                            <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
                                 <span className="material-symbols-outlined text-[24px]">close</span>
                             </button>
                         </div>
-                        <div className="p-6 space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Title *</label>
-                                <input
-                                    className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary py-2.5 px-3"
-                                    placeholder="e.g. Pump A2 - High Vibration"
-                                    value={newWO.title}
-                                    onChange={e => setNewWO(p => ({ ...p, title: e.target.value }))}
-                                />
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Priority</label>
-                                    <select
-                                        className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary py-2.5 px-3"
-                                        value={newWO.priority}
-                                        onChange={e => setNewWO(p => ({ ...p, priority: e.target.value }))}
-                                    >
-                                        <option value="CRITICAL">Critical</option>
-                                        <option value="HIGH">High</option>
-                                        <option value="MEDIUM">Medium</option>
-                                        <option value="LOW">Low</option>
-                                    </select>
+                        <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-8">
+                            <section>
+                                <div className="flex items-center gap-2 mb-4">
+                                    <span className="size-6 rounded bg-primary/10 text-primary flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-[16px]">info</span>
+                                    </span>
+                                    <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500">General Information</h3>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                                            Work Order ID
+                                        </label>
+                                        <div className="relative">
+                                            <input className="w-full bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-500 cursor-not-allowed pl-3 pr-10 py-2.5" disabled type="text" value="WO-(Auto)" />
+                                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[18px]">lock</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                                            Priority <span className="text-red-500">*</span>
+                                        </label>
+                                        <select
+                                            className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary py-2.5"
+                                            value={newWO.priority}
+                                            onChange={e => setNewWO(p => ({ ...p, priority: e.target.value }))}
+                                        >
+                                            <option value="CRITICAL">Critical</option>
+                                            <option value="HIGH">High</option>
+                                            <option value="MEDIUM">Medium</option>
+                                            <option value="LOW">Low</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                                            Assigned Technician
+                                        </label>
+                                        <div className="relative">
+                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[18px]">person_search</span>
+                                            <input className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary pl-10 pr-3 py-2.5" placeholder="Search technician..." type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section className="border-t border-slate-100 dark:border-slate-700/50 pt-6">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <span className="size-6 rounded bg-primary/10 text-primary flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-[16px]">precision_manufacturing</span>
+                                    </span>
+                                    <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500">Asset Selection</h3>
+                                </div>
+                                <div className="grid grid-cols-1 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                                            Industrial Asset <span className="text-red-500">*</span>
+                                        </label>
+                                        <div className="relative group">
+                                            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[20px]">search</div>
+                                            <input
+                                                className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary pl-10 pr-10 py-2.5 shadow-sm"
+                                                placeholder="Start typing asset name or ID (e.g. Hydraulic Pump A2)..."
+                                                type="text"
+                                                value={newWO.assetName}
+                                                onChange={e => setNewWO(p => ({ ...p, assetName: e.target.value }))}
+                                            />
+                                            <button className="absolute right-2 top-1.5 p-1 text-slate-400 hover:text-primary rounded bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                                                <span className="material-symbols-outlined text-[16px]">account_tree</span>
+                                            </button>
+                                        </div>
+                                        <div className="mt-2 text-xs text-slate-500">Selected: <span className="font-semibold text-slate-700 dark:text-slate-300">{newWO.assetName || 'None'}</span></div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section className="border-t border-slate-100 dark:border-slate-700/50 pt-6">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <span className="size-6 rounded bg-primary/10 text-primary flex items-center justify-center">
+                                        <span className="material-symbols-outlined text-[16px]">stethoscope</span>
+                                    </span>
+                                    <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500">Symptom Entry (MAXER)</h3>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                                            Object <span className="text-red-500">*</span>
+                                        </label>
+                                        <div className="relative">
+                                            <input
+                                                className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary py-2.5 px-3"
+                                                list="objects"
+                                                placeholder="e.g. Bearing, Motor, Seal"
+                                                type="text"
+                                                value={newWO.object}
+                                                onChange={e => setNewWO(p => ({ ...p, object: e.target.value }))}
+                                            />
+                                            <datalist id="objects">
+                                                <option value="Bearing"></option>
+                                                <option value="Motor"></option>
+                                                <option value="Seal"></option>
+                                                <option value="Gearbox"></option>
+                                                <option value="Fan"></option>
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                                            Defect <span className="text-red-500">*</span>
+                                        </label>
+                                        <div className="relative">
+                                            <input
+                                                className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary py-2.5 px-3"
+                                                list="defects"
+                                                placeholder="e.g. Vibration, Noise, Leakage"
+                                                type="text"
+                                                value={newWO.defect}
+                                                onChange={e => setNewWO(p => ({ ...p, defect: e.target.value }))}
+                                            />
+                                            <datalist id="defects">
+                                                <option value="High Vibration"></option>
+                                                <option value="Unusual Noise"></option>
+                                                <option value="Oil Leakage"></option>
+                                                <option value="Overheating"></option>
+                                                <option value="Misalignment"></option>
+                                            </datalist>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Type</label>
-                                    <select
-                                        className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary py-2.5 px-3"
-                                        value={newWO.type}
-                                        onChange={e => setNewWO(p => ({ ...p, type: e.target.value }))}
-                                    >
-                                        <option value="CORRECTIVE">Corrective</option>
-                                        <option value="PREVENTIVE">Preventive</option>
-                                        <option value="PREDICTIVE">Predictive</option>
-                                    </select>
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                                        Description
+                                    </label>
+                                    <textarea
+                                        className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary p-3"
+                                        placeholder="Provide additional context about the failure or observation..."
+                                        rows={3}
+                                        value={newWO.description}
+                                        onChange={e => setNewWO(p => ({ ...p, description: e.target.value }))}
+                                    />
                                 </div>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Symptom / Description</label>
-                                <textarea
-                                    className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary p-3"
-                                    placeholder="Describe the issue..."
-                                    rows={3}
-                                    value={newWO.reported_symptom}
-                                    onChange={e => setNewWO(p => ({ ...p, reported_symptom: e.target.value }))}
-                                />
-                            </div>
+                            </section>
                         </div>
-                        <div className="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700 flex justify-end gap-3">
-                            <button onClick={() => setShowModal(false)} className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg border border-slate-300 dark:border-slate-600">Cancel</button>
-                            <button onClick={handleCreateWO} className="px-5 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg shadow-sm shadow-primary/30 flex items-center gap-2">
-                                <span className="material-symbols-outlined text-[18px]">save</span>
-                                Save to Database
-                            </button>
+                        <div className="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                            <div className="flex items-center">
+                                <label className="inline-flex items-center cursor-pointer group">
+                                    <input
+                                        type="checkbox"
+                                        className="sr-only peer"
+                                        checked={newWO.syncGmao}
+                                        onChange={e => setNewWO(p => ({ ...p, syncGmao: e.target.checked }))}
+                                    />
+                                    <div className="relative w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/20 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+                                    <span className="ms-3 text-sm font-medium text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white">Sync with SAP/Maximo</span>
+                                </label>
+                            </div>
+                            <div className="flex gap-3">
+                                <button onClick={() => setShowModal(false)} className="px-5 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg border border-slate-300 dark:border-slate-600 transition-colors">
+                                    Cancel
+                                </button>
+                                <button onClick={handleCreateWO} className="px-5 py-2.5 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-lg shadow-sm shadow-primary/30 transition-all flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-[18px]">save</span>
+                                    Create Work Order
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
