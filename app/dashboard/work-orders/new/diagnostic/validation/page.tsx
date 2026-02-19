@@ -48,10 +48,10 @@ export default function SymptomVerificationPage() {
                             <span className="material-symbols-outlined text-[20px]">save</span>
                             Save Draft
                         </button>
-                        <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm shadow-primary/20">
+                        <Link href="/dashboard/work-orders/new/diagnostic/root-cause" className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm shadow-primary/20">
                             Next Step
                             <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                        </button>
+                        </Link>
                     </div>
                 </div>
 

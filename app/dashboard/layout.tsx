@@ -28,8 +28,8 @@ export default function DashboardOverviewLayout({
                         <>
                             <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-3 mt-2">Diagnostic Process</div>
                             <Link href="/dashboard/work-orders/new/diagnostic" className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors font-medium ${pathname === '/dashboard/work-orders/new/diagnostic'
-                                    ? 'bg-primary/10 text-primary'
-                                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                                ? 'bg-primary/10 text-primary'
+                                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                                 }`}>
                                 <span className={`material-symbols-outlined text-[20px] ${pathname !== '/dashboard/work-orders/new/diagnostic' ? 'text-green-500' : ''
                                     }`}>
@@ -39,12 +39,20 @@ export default function DashboardOverviewLayout({
                             </Link>
                             <Link href="/dashboard/work-orders/new/diagnostic/validation" className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group ${pathname === '/dashboard/work-orders/new/diagnostic/validation'
                                     ? 'bg-primary/10 text-primary'
-                                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                                    : pathname === '/dashboard/work-orders/new/diagnostic/root-cause'
+                                        ? 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                                 }`}>
-                                <span className="material-symbols-outlined text-[20px] group-hover:text-primary">fact_check</span>
+                                <span className={`material-symbols-outlined text-[20px] ${pathname === '/dashboard/work-orders/new/diagnostic/root-cause' ? 'text-green-500' : 'group-hover:text-primary'
+                                    }`}>
+                                    {pathname === '/dashboard/work-orders/new/diagnostic/root-cause' ? 'check_circle' : 'fact_check'}
+                                </span>
                                 <span className="text-sm font-medium">Validation</span>
                             </Link>
-                            <Link href="#" className="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors group">
+                            <Link href="/dashboard/work-orders/new/diagnostic/root-cause" className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group ${pathname === '/dashboard/work-orders/new/diagnostic/root-cause'
+                                    ? 'bg-primary/10 text-primary'
+                                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+                                }`}>
                                 <span className="material-symbols-outlined text-[20px] group-hover:text-primary">psychology</span>
                                 <span className="text-sm font-medium">Root Cause (5 Why)</span>
                             </Link>
