@@ -9,6 +9,7 @@ export default function LoginPage() {
     const router = useRouter();
     const [email, setEmail] = useState('admin@gmail.com');
     const [password, setPassword] = useState('password123');
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -99,13 +100,19 @@ export default function LoginPage() {
                                 <input
                                     className="w-full h-12 px-4 pr-12 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-slate-400 focus:bg-white"
                                     placeholder="••••••••••••"
-                                    type="password"
+                                    type={showPassword ? 'text' : 'password'}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     required
                                 />
-                                <button className="absolute right-0 top-0 h-full px-4 text-slate-400 hover:text-slate-600 transition-colors flex items-center" type="button">
-                                    <span className="material-symbols-outlined">visibility</span>
+                                <button
+                                    className="absolute right-0 top-0 h-full px-4 text-slate-400 hover:text-slate-600 transition-colors flex items-center"
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    <span className="material-symbols-outlined">
+                                        {showPassword ? 'visibility_off' : 'visibility'}
+                                    </span>
                                 </button>
                             </div>
                         </label>

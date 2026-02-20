@@ -14,10 +14,10 @@ export default function NewWorkOrderPage() {
                             <span className="material-symbols-outlined text-[14px]">chevron_right</span>
                             <span className="text-slate-800 dark:text-slate-200 font-medium">WO Details</span>
                             <span className="material-symbols-outlined text-[14px]">chevron_right</span>
-                            <span className="text-primary font-mono font-medium">#OT-4921</span>
+                            <span className="text-primary font-mono font-medium">#WO-4921</span>
                         </div>
                         <div className="flex items-center gap-3">
-                            <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Work Order #OT-4921</h1>
+                            <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Work Order #WO-4921</h1>
                             <span className="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-2 py-1 rounded text-xs font-bold inline-flex items-center gap-1 border border-red-200 dark:border-red-900/50">
                                 <span className="size-1.5 rounded-full bg-red-600 animate-pulse"></span>
                                 Critical
@@ -117,7 +117,7 @@ export default function NewWorkOrderPage() {
                                                 <span className="material-symbols-outlined">history</span>
                                             </div>
                                             <div>
-                                                <p className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-primary transition-colors">Similar Case: #OT-3882</p>
+                                                <p className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-primary transition-colors">Similar Case: #WO-3882</p>
                                                 <p className="text-xs text-slate-500 mt-1">Resolved by changing coupling element (94% similarity)</p>
                                                 <div className="mt-2 flex gap-2">
                                                     <span className="text-[10px] bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-300 px-1.5 py-0.5 rounded">Insight</span>

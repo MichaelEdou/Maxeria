@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { createClient } from '@/lib/supabase/client';
 
 export default function DashboardOverviewLayout({
     children,
@@ -9,6 +11,23 @@ export default function DashboardOverviewLayout({
     children: React.ReactNode;
 }) {
     const pathname = usePathname();
+    const supabase = createClient();
+    const [userProfile, setUserProfile] = useState<any>(null);
+
+    useEffect(() => {
+        async function fetchProfile() {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('*, roles(name)')
+                    .eq('id', user.id)
+                    .single();
+                setUserProfile(profile);
+            }
+        }
+        fetchProfile();
+    }, [supabase]);
 
     return (
         <div className="flex h-screen w-full overflow-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display">
@@ -69,7 +88,7 @@ export default function DashboardOverviewLayout({
                             <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-3 mt-4">Case Info</div>
                             <div className="px-3 py-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-700">
                                 <div className="flex items-center justify-between mb-2">
-                                    <span className="text-xs font-bold text-slate-500">WO #OT-4921</span>
+                                    <span className="text-xs font-bold text-slate-500">WO #WO-4921</span>
                                     <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300">Critical</span>
                                 </div>
                                 <div className="text-sm font-medium text-slate-800 dark:text-slate-200">Hydraulic Pump A2</div>
@@ -141,10 +160,16 @@ export default function DashboardOverviewLayout({
                 </nav>
                 <div className="p-4 border-t border-slate-200 dark:border-slate-800">
                     <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors">
-                        <div className="h-9 w-9 rounded-full bg-slate-200 bg-cover bg-center" data-alt="User profile photo" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCSS0YAzjlb0PuQJLtNOVEVdK4RQJ-msbrKIszgfqriwtJ1gSmeJjvlt99Wvow4rooIj-ybpAqj8lOTXtgQqWTvxIKbRwiUbUixaROyUXwQZy_lfqaMSGLZSaXl7w-3ixLqIVnEjZ66RCJiKQ3aipB83CPjsLbgx8cixQlyH3J1knAHvUVlQ2fUwgo_SNy1HfHTWU1HvegADcWANz8whXw60Acjuk8cT4OvnGMlEw9_eRM4xb6fMwcmCPTTzkRiB2HirxtnYM76P5Y')" }}></div>
+                        <div className="h-9 w-9 rounded-full bg-slate-200 bg-cover bg-center flex items-center justify-center font-bold text-slate-500 bg-indigo-50" data-alt="User profile photo">
+                            {userProfile?.initials || userProfile?.first_name?.[0] || 'U'}
+                        </div>
                         <div className="flex flex-col">
-                            <span className="text-sm font-semibold text-slate-900 dark:text-white">Alex Morgan</span>
-                            <span className="text-xs text-slate-500 dark:text-slate-400">Maintenance Lead</span>
+                            <span className="text-sm font-semibold text-slate-900 dark:text-white truncate max-w-[140px]">
+                                {userProfile ? `${userProfile.first_name} ${userProfile.last_name}` : 'Loading...'}
+                            </span>
+                            <span className="text-xs text-slate-500 dark:text-slate-400">
+                                {userProfile?.roles?.name || 'Authorized User'}
+                            </span>
                         </div>
                     </div>
                 </div>

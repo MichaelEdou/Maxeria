@@ -38,7 +38,7 @@ export default function SolutionPage() {
                         <div className="flex items-center gap-2 text-sm text-slate-500 mb-1">
                             <Link href="/dashboard/work-orders" className="hover:text-primary transition-colors">Work Orders</Link>
                             <span className="material-symbols-outlined text-[14px]">chevron_right</span>
-                            <Link href="/dashboard/work-orders/new" className="hover:text-primary transition-colors">#OT-4921</Link>
+                            <Link href="/dashboard/work-orders/new" className="hover:text-primary transition-colors">#WO-4921</Link>
                             <span className="material-symbols-outlined text-[14px]">chevron_right</span>
                             <span className="text-slate-800 dark:text-slate-200 font-medium">Solution</span>
                         </div>

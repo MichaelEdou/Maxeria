@@ -34,7 +34,7 @@ export default function SymptomVerificationPage() {
                         <div className="flex items-center gap-2 text-sm text-slate-500 mb-1">
                             <Link href="/dashboard/work-orders" className="hover:text-primary transition-colors">Work Orders</Link>
                             <span className="material-symbols-outlined text-[14px]">chevron_right</span>
-                            <Link href="/dashboard/work-orders/new" className="hover:text-primary transition-colors">#OT-4921</Link>
+                            <Link href="/dashboard/work-orders/new" className="hover:text-primary transition-colors">#WO-4921</Link>
                             <span className="material-symbols-outlined text-[14px]">chevron_right</span>
                             <span className="text-slate-800 dark:text-slate-200 font-medium">Symptom Verification</span>
                         </div>
@@ -116,7 +116,7 @@ export default function SymptomVerificationPage() {
                         <div className="p-4 bg-indigo-50 dark:bg-indigo-900/10 border border-indigo-100 dark:border-indigo-800/30 rounded-lg">
                             <h4 className="text-xs font-bold text-indigo-800 dark:text-indigo-300 uppercase tracking-wider mb-2">Most Efficient Path</h4>
                             <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-                                Start with <strong className="text-indigo-700 dark:text-indigo-400">Acoustic Measurement</strong>. In 85% of similar cases (#OT-3204, #OT-2881), this test provided the definitive confirmation for &quot;High Frequency Vibration&quot;.
+                                Start with <strong className="text-indigo-700 dark:text-indigo-400">Acoustic Measurement</strong>. In 85% of similar cases (#WO-3204, #WO-2881), this test provided the definitive confirmation for &quot;High Frequency Vibration&quot;.
                             </p>
                         </div>
 

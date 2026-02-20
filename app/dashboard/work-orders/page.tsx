@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -20,7 +21,7 @@ type WorkOrder = {
         code: string;
         asset_category: string | null;
     } | null;
-    profiles: {
+    technicians: {
         first_name: string | null;
         last_name: string | null;
         initials: string | null;
@@ -68,6 +69,7 @@ function priorityLabel(p: string) {
 // ─── Component ───────────────────────────────────────────────────────────────
 export default function WorkOrdersPage() {
     const supabase = createClient();
+    const router = useRouter();
 
     const [showModal, setShowModal] = useState(false);
     const [workOrders, setWorkOrders] = useState<WorkOrder[]>([]);
@@ -80,7 +82,27 @@ export default function WorkOrdersPage() {
     // New WO form state
     const [newWO, setNewWO] = useState({
         assetName: '', priority: 'HIGH', object: '', defect: '', description: '', syncGmao: true,
+        assigned_technician_id: '',
     });
+
+    const [technicians, setTechnicians] = useState<any[]>([]);
+    const [techSearch, setTechSearch] = useState('');
+    const [showTechDropdown, setShowTechDropdown] = useState(false);
+
+    useEffect(() => {
+        const fetchTechs = async () => {
+            const { data } = await supabase
+                .from('technicians')
+                .select('id, first_name, last_name, initials')
+                .eq('is_active', true);
+            if (data) setTechnicians(data);
+        };
+        fetchTechs();
+    }, [supabase]);
+
+    const filteredTechs = technicians.filter(t =>
+        `${t.first_name} ${t.last_name} ${t.initials}`.toLowerCase().includes(techSearch.toLowerCase())
+    );
 
     // ── Fetch work orders ──────────────────────────────────────────────────
     const fetchWorkOrders = useCallback(async () => {
@@ -94,7 +116,7 @@ export default function WorkOrdersPage() {
                     reported_symptom, gmao_sync_status,
                     estimated_duration_hours, created_at,
                     functional_locations ( name, code, asset_category ),
-                    profiles!work_orders_assigned_technician_id_fkey ( first_name, last_name, initials )
+                    technicians!work_orders_assigned_technician_id_fkey ( first_name, last_name, initials )
                 `)
                 .order('created_at', { ascending: false });
 
@@ -114,24 +136,45 @@ export default function WorkOrdersPage() {
     useEffect(() => { fetchWorkOrders(); }, [fetchWorkOrders]);
 
     // ── Create new WO ──────────────────────────────────────────────────────
+    const [creating, setCreating] = useState(false);
+
     const handleCreateWO = async () => {
         if (!newWO.assetName.trim() && !newWO.object.trim()) return;
-        const nextNum = `WO-${Date.now().toString().slice(-4)}`;
-        const title = `${newWO.assetName || 'Unknown Asset'} - ${newWO.object} ${newWO.defect}`;
-        const symptom = `${newWO.object ? newWO.object + ': ' : ''}${newWO.description || newWO.defect}`;
-        const { error: dbErr } = await supabase.from('work_orders').insert({
-            wo_number: nextNum,
-            title: title,
-            priority: newWO.priority,
-            reported_symptom: symptom,
-            type: 'CORRECTIVE',
-            status: 'OPEN',
-            plant_id: '00000000-0000-0000-0000-000000000010',
-        });
-        if (dbErr) { alert('Error: ' + dbErr.message); return; }
-        setShowModal(false);
-        setNewWO({ assetName: '', priority: 'HIGH', object: '', defect: '', description: '', syncGmao: true });
-        fetchWorkOrders();
+
+        setCreating(true);
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                alert('Security context missing. Please sign in again.');
+                setCreating(false);
+                return;
+            }
+
+            const nextNum = `WO-${Date.now().toString().slice(-4)}`;
+            const title = `${newWO.assetName || 'Unknown Asset'} - ${newWO.object} ${newWO.defect}`;
+            const symptom = `${newWO.object ? newWO.object + ': ' : ''}${newWO.description || newWO.defect}`;
+
+            const { error: dbErr } = await supabase.from('work_orders').insert({
+                wo_number: nextNum,
+                title: title,
+                priority: newWO.priority,
+                reported_symptom: symptom,
+                type: 'CORRECTIVE',
+                status: 'OPEN',
+                plant_id: '00000000-0000-0000-0000-000000000010',
+                created_by: user.id,
+                assigned_technician_id: newWO.assigned_technician_id || null
+            });
+            if (dbErr) { alert('Error: ' + dbErr.message); return; }
+            setShowModal(false);
+            setNewWO({ assetName: '', priority: 'HIGH', object: '', defect: '', description: '', syncGmao: true, assigned_technician_id: '' });
+            setTechSearch('');
+
+            const slug = nextNum.replace(/^[A-Z]+-/, '');
+            router.push(`/dashboard/work-orders/${slug}`);
+        } finally {
+            setCreating(false);
+        }
     };
 
     // ── Filtered list ──────────────────────────────────────────────────────
@@ -205,13 +248,19 @@ export default function WorkOrdersPage() {
                                         </select>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                                            Assigned Technician
-                                        </label>
-                                        <div className="relative">
-                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[18px]">person_search</span>
-                                            <input className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary pl-10 pr-3 py-2.5" placeholder="Search technician..." type="text" />
-                                        </div>
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Assigned Technician</label>
+                                        <select
+                                            className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-primary focus:border-primary py-2.5 px-3"
+                                            value={newWO.assigned_technician_id}
+                                            onChange={e => setNewWO(p => ({ ...p, assigned_technician_id: e.target.value }))}
+                                        >
+                                            <option value="">-- Select Technician --</option>
+                                            {technicians.map(tech => (
+                                                <option key={tech.id} value={tech.id}>
+                                                    {tech.first_name} {tech.last_name} ({tech.initials})
+                                                </option>
+                                            ))}
+                                        </select>
                                     </div>
                                 </div>
                             </section>
@@ -460,10 +509,10 @@ export default function WorkOrdersPage() {
                             ) : filtered.map(wo => {
                                 const woIdSlug = wo.wo_number.replace(/^[A-Z]+-/, '');
                                 const gmao = gmaoStyle[wo.gmao_sync_status ?? 'PENDING'] ?? gmaoStyle.PENDING;
-                                const techName = wo.profiles
-                                    ? `${wo.profiles.first_name ?? ''} ${wo.profiles.last_name ?? ''}`.trim() || 'Unassigned'
+                                const techName = wo.technicians
+                                    ? `${wo.technicians.first_name ?? ''} ${wo.technicians.last_name ?? ''}`.trim() || 'Unassigned'
                                     : 'Unassigned';
-                                const initials = wo.profiles?.initials ?? '--';
+                                const initials = wo.technicians?.initials ?? '--';
                                 const isInProgress = wo.status === 'IN_DIAGNOSIS' || wo.status === 'IN_PROGRESS';
 
                                 return (

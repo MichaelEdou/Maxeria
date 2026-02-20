@@ -12,7 +12,7 @@ export default function MaxerDiagnosticPage() {
                         <div className="flex items-center gap-2 text-sm text-slate-500 mb-1">
                             <Link href="/dashboard/work-orders" className="hover:text-primary transition-colors">Work Orders</Link>
                             <span className="material-symbols-outlined text-[14px]">chevron_right</span>
-                            <Link href="/dashboard/work-orders/new" className="hover:text-primary transition-colors">#OT-4921</Link>
+                            <Link href="/dashboard/work-orders/new" className="hover:text-primary transition-colors">#WO-4921</Link>
                             <span className="material-symbols-outlined text-[14px]">chevron_right</span>
                             <span className="text-slate-800 dark:text-slate-200 font-medium">Situation Analysis</span>
                         </div>
@@ -207,7 +207,7 @@ export default function MaxerDiagnosticPage() {
                             {/* Case 1 */}
                             <div className="group relative bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-500 rounded-lg p-3 transition-colors cursor-pointer shadow-sm hover:shadow-md">
                                 <div className="flex justify-between items-start mb-1">
-                                    <span className="text-xs font-mono text-slate-500">#OT-3204</span>
+                                    <span className="text-xs font-mono text-slate-500">#WO-3204</span>
                                     <span className="text-[10px] font-bold text-green-600 bg-green-50 dark:bg-green-900/20 px-1.5 py-0.5 rounded">Solved</span>
                                 </div>
                                 <h5 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1 group-hover:text-indigo-600 transition-colors">Inner Race Defect</h5>
@@ -226,7 +226,7 @@ export default function MaxerDiagnosticPage() {
                             {/* Case 2 */}
                             <div className="group relative bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-500 rounded-lg p-3 transition-colors cursor-pointer shadow-sm hover:shadow-md">
                                 <div className="flex justify-between items-start mb-1">
-                                    <span className="text-xs font-mono text-slate-500">#OT-2881</span>
+                                    <span className="text-xs font-mono text-slate-500">#WO-2881</span>
                                     <span className="text-[10px] font-bold text-green-600 bg-green-50 dark:bg-green-900/20 px-1.5 py-0.5 rounded">Solved</span>
                                 </div>
                                 <h5 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1 group-hover:text-indigo-600 transition-colors">Lubrication Issue</h5>
@@ -245,7 +245,7 @@ export default function MaxerDiagnosticPage() {
                             {/* Case 3 */}
                             <div className="group relative bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-500 rounded-lg p-3 transition-colors cursor-pointer shadow-sm hover:shadow-md">
                                 <div className="flex justify-between items-start mb-1">
-                                    <span className="text-xs font-mono text-slate-500">#OT-1045</span>
+                                    <span className="text-xs font-mono text-slate-500">#WO-1045</span>
                                     <span className="text-[10px] font-bold text-green-600 bg-green-50 dark:bg-green-900/20 px-1.5 py-0.5 rounded">Solved</span>
                                 </div>
                                 <h5 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1 group-hover:text-indigo-600 transition-colors">Loose Mounting Bolt</h5>
